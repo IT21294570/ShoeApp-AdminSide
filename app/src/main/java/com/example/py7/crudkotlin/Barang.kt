@@ -1,7 +1,6 @@
 package com.example.py7.crudkotlin
 
-import java.util.Date
-
+// this is the product class
 class Barang {
 
     var id: Int? = null

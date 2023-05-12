@@ -6,6 +6,9 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
+// this the class consist of database details
+// table name : Product
+// columns : Name, Brand, Price, Category, Quantity, Size, Description, Date, Image
 class DBAdapter {
 
     private val dbName = "dbProduct4"
@@ -22,10 +25,7 @@ class DBAdapter {
     private val colImage = "Image"
     private val dbVersion = 1
 
-//    private val CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS " +
-//            dbTable + " (" + colId + " " + "INTEGER PRIMARY KEY," + colName + " TEXT, " +
-//            colBrand + " TEXT, " + colPrice + " TEXT);"
-
+    // create table with specified columns
     private val CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS " +
             dbTable + " (" + colId + " " + "INTEGER PRIMARY KEY," + colName + " TEXT, " +colImage+" BLOB, "+
             colCategory+" TEXT, "+colQuantity + " TEXT, "+colSize+" TEXT, "+colDescription+" TEXT, "+colDate+" TEXT, "+
@@ -37,20 +37,24 @@ class DBAdapter {
         db = dbHelper.writableDatabase
     }
 
+    // to get all the item
     fun allQuery(): Cursor {
         return db!!.rawQuery("select * from " + dbTable, null)
     }
 
+    // to insert an item
     fun insert(values: ContentValues): Long{
         val ID = db!!.insert(dbTable, "", values)
         return ID
     }
 
+    // to update an item
     fun update(values: ContentValues, selection: String, selectionArgs: Array<String>): Int{
         val count = db!!.update(dbTable, values, selection, selectionArgs)
         return count
     }
 
+    // to delete an item
     fun delete(selection: String, selectionArgs: Array<String>):Int{
         val count = db!!.delete(dbTable, selection, selectionArgs)
         return count

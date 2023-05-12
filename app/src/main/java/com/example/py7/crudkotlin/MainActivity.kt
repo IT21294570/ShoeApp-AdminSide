@@ -4,16 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.BaseAdapter
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -40,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         loadData()
     }
 
+    // this function will display item getting them from database
     private fun loadData() {
         var dbAdapter = DBAdapter(this)
         var cursor = dbAdapter.allQuery()
@@ -63,8 +61,40 @@ class MainActivity : AppCompatActivity() {
 
         var barangAdapter = BarangAdapter(this, listBarang)
         lvBarang.adapter = barangAdapter
+
+        // this will handle search
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                if(query == ""){
+                    var barangAdapter = BarangAdapter(this@MainActivity, listBarang)
+                    lvBarang.adapter = barangAdapter
+                }else {
+                    var l =
+                        listBarang.filter { i -> i.name!!.contains(query, true) } as java.util.ArrayList<Barang>
+                    var barangAdapter = BarangAdapter(this@MainActivity, l)
+                    lvBarang.adapter = barangAdapter
+                }
+                    return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+
+                if(newText == ""){
+                    var barangAdapter = BarangAdapter(this@MainActivity, listBarang)
+                    lvBarang.adapter = barangAdapter
+                }else {
+                    var l =
+                        listBarang.filter { i -> i.name!!.contains(newText, true) } as java.util.ArrayList<Barang>
+                    var barangAdapter = BarangAdapter(this@MainActivity, l)
+                    lvBarang.adapter = barangAdapter
+                }
+                    return false
+            }
+        })
+
     }
 
+    // this is the adapter class for item
     inner class BarangAdapter: BaseAdapter{
 
         private var barangList = ArrayList<Barang>()
@@ -100,7 +130,7 @@ class MainActivity : AppCompatActivity() {
 
             vh.tvImage.setImageBitmap(bmp)
 
-//
+
             lvBarang.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, id ->
                 updateBarang(barangList[position])
             }
@@ -122,7 +152,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // this function used to update an item
     private fun updateBarang(barang: Barang) {
+        // creating an intent and send data through it to other activity
         var  intent = Intent(this, BarangActivity::class.java)
         intent.putExtra("MainActId", barang.id)
         intent.putExtra("MainActName", barang.name)
@@ -137,6 +169,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    // this is the skeleton of UI of item
     private class ViewHolder(view: View?){
         val tvName: TextView
         val tvBrand: TextView

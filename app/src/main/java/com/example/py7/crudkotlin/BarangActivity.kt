@@ -26,6 +26,7 @@ class BarangActivity : AppCompatActivity() {
         setContentView(R.layout.activity_barang)
 
         try {
+            // getting data from intent
             var bundle: Bundle = intent.extras
             id = bundle.getInt("MainActId", 0)
             if (id !=0){
@@ -46,6 +47,9 @@ class BarangActivity : AppCompatActivity() {
 
     }
 
+//     this function will show delete button
+//     if we select an item it will show the delete button
+//     else delete button will not appear
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.add_menu, menu)
 
@@ -61,6 +65,7 @@ class BarangActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
+            // to save or update an item
             R.id.action_save -> {
                 var dbAdapter = DBAdapter(this)
 
@@ -103,6 +108,7 @@ class BarangActivity : AppCompatActivity() {
                 }
                 true
             }
+            // to delete an item
             R.id.action_delete ->{
                 val builder = AlertDialog.Builder(this)
                 builder.setTitle("Delete Data")
@@ -126,12 +132,14 @@ class BarangActivity : AppCompatActivity() {
         }
     }
 
+    // to get an image from device
     public fun insertImg(view: View?){
         var myFileIntent = Intent(Intent.ACTION_GET_CONTENT)
         myFileIntent.setType("image/*")
         startActivityForResult(myFileIntent, 100)
     }
 
+    // to display the image got from the device
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == 100 && resultCode == RESULT_OK){

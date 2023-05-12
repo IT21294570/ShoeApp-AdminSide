@@ -7,6 +7,7 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+
     <android.support.design.widget.AppBarLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -19,9 +20,17 @@
                 android:background="@color/main_color"
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:queryHint="Search product" />
+
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main"/>
+    <include
+        android:id="@+id/include2"
+        layout="@layout/content_main" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
